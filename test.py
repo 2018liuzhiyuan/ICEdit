@@ -1,3 +1,4 @@
+# Test 11 examples
 file_name = [
     "assets/coffee.png",
     "assets/coffee.png",
@@ -31,7 +32,7 @@ id = 0
 for x, y in zip(file_name, test_instruction):
     id += 1
     y = '"' + y + '"'
-    os.system(f"ASCEND_RT_VISIBLE_DEVICES=7 python scripts/inference.py --image train/{x} \
+    os.system(f"ASCEND_RT_VISIBLE_DEVICES=0 python scripts/inference.py --image train/{x} \
     --instruction {y} \
     --seed 304897401 --save-name {id}.png --output-dir results")
 
