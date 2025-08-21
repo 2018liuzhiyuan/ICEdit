@@ -55,7 +55,9 @@ bash prepare.sh
 ## Training
 
 ```bash
-bash train/script/train.sh
+bash train/script/train.sh # 6 NPUs train
+
+bash train/script/train_single.sh # Single NPU train
 ```
 
 You can modify the training configuration in `train/config/normal_lora.yaml`. 
