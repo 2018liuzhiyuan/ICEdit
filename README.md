@@ -39,112 +39,6 @@ Moreover, this version supports multi-NPU training, enabling efficient and scala
 
 <div align="left">
 
-
-### 📢 Attention All: Incorrect ComfyUI Workflow Usage Alert — Read Now!
-- ### We have released our **[official ComfyUI workflow](#official-comfyui-workflow)** for proper usage! Check our repository and have a try!
-- You need to **add the fixed pre-prompt "A diptych with two side-by-side images of the same scene. On the right, the scene is exactly the same as on the left but {instruction}"** before inputing the edit instructions, otherwise you may get bad results! (This is mentioned in the paper!, The code for the Hugging Face gradio demo already embeds this prompt. So, you can simply input the editing instructions without additional setup.)
-- The width of the input image must resize to **512** (no restriction to height).
-- Please **[use the Normal LoRA](https://huggingface.co/RiverZ/normal-lora/tree/main)** not the MoE-LoRA, because the MoE-LoRA cannot be correctly loaded with ComfyUI lora loader.
-- 🔥💐🎆 Welcome to share your **creative workflows** (such as combining Redux, ACE, etc.) in the Issues section and showcase the results! We will include references so that more people can see your creativity.
-
-
-# 🎆 News 
-
-### 👑 Feel free to share your results in this [Gallery](https://github.com/River-Zhang/ICEdit/discussions/21)!
-- **[2025/5/16]** 🌟 Many thanks to [gluttony-10 (十字鱼)](https://github.com/River-Zhang/ICEdit/pull/47#issue-3067039788) for adapting Gradio demo with [GGUF quantization](#inference-in-gradio-demo), further reducing memory usage to **10GB**.
-- **[2025/5/14]** 🔥 With the help of the [official comfy-org](https://www.comfy.org/zh-cn/), we have integrated our ComfyUI nodes into [Comfy Registry](https://registry.comfy.org/nodes/ICEdit)! 
-- **[2025/5/13]** 🔥 We have released the [training code](./train/)! Train your own editing LoRAs now!
-- **[2025/5/11]** 🌟 Great thanks to [gluttony-10 (十字鱼)](https://github.com/River-Zhang/ICEdit/issues/23#issue-3050804566) for making a [windows gradio demo](#inference-in-gradio-demo-on-windows) to use our project on Windows!
-- **[2025/5/8]** 🔥 We have released our **[official ComfyUI workflow](#official-comfyui-workflow)**! 🚀 Check the repository and have a try!
-- **[2025/5/8]** 🔥 We have added LoRA scale slider in the gradio demo. You can try to discover more interesting demo with different scale! 
-<div align="center">
-<img src="docs/images/lora_scale.png" width="70%" style="display: block; margin: auto;">
-<div align="left">
-
-- **[2025/5/7]** 🌟 We update some notes when using the ComfyUI workflow to avoid unsatisfactory results! 
-- **[2025/5/6]** 🔥 ICEdit currently ranks **2nd** on the overall/weekly trending list of [Hugging Face space](https://huggingface.co/spaces). Thank you all for your support and love!🤗
-- **[2025/5/5]** 🌟 Heartfelt thanks to [Datou](https://x.com/Datou) for creating a fantastic [ComfyUI workflow](https://openart.ai/workflows/datou/icedit-moe-lora-flux-fill/QFmaWNKsQo3P5liYz4RB) on OpenArt! 🚀 Have a try!
-- **[2025/5/2]** 🌟 Heartfelt thanks to [judian17](https://github.com/River-Zhang/ICEdit/issues/1#issuecomment-2846568411) for crafting an amazing [ComfyUI-nunchaku demo](https://github.com/River-Zhang/ICEdit/issues/1#issuecomment-2846568411)! Only **4GB VRAM GPU** is enough to run with ComfyUI-nunchaku!🚀 Dive in and give it a spin!
-- **[2025/4/30]** 🔥 We release the [Huggingface Demo](https://huggingface.co/spaces/RiverZ/ICEdit) 🤗! Have a try!
-- **[2025/4/30]** 🔥 We release the [paper](https://arxiv.org/abs/2504.20690) on arXiv!
-- **[2025/4/29]** We release the [project page](https://river-zhang.github.io/ICEdit-gh-pages/) and demo video! Codes will be made available in next week~ Happy Labor Day!
-
-# 🎈 Tutorial on Bilibili or Youtube
-
-- **[2025/5/15]** 🌟 We find that [啦啦啦的小黄瓜](https://space.bilibili.com/219572544) has made a detailed [bilibili tutorial](https://www.bilibili.com/video/BV1tSEqzJE7q/?share_source=copy_web&vd_source=8fcb933ee576af56337afc41509fa095) introducing our model! What a great video!
-- **[2025/5/14]** 🌟 We find that [Nenly同学](https://space.bilibili.com/1814756990) has made a fantastic [bilibili tutorial](https://www.bilibili.com/video/BV1bNEvzrEn1/?share_source=copy_web&vd_source=8fcb933ee576af56337afc41509fa095) on how to use our repository! Great thanks to him!
-- **[2025/5/10]** 🌟 Great thanks to [月下Hugo](https://www.bilibili.com/video/BV1JZVRzuE12/?share_source=copy_web&vd_source=8fcb933ee576af56337afc41509fa095) for making a [Chinese tutorial](https://www.bilibili.com/video/BV1JZVRzuE12/?share_source=copy_web&vd_source=8fcb933ee576af56337afc41509fa095) on how to use our official workflow!
-- **[2025/5/7]** 🌟 Heartfelt thanks to [T8star](https://x.com/T8star_Aix) for making a [tutorial](https://www.youtube.com/watch?v=s6GMKL-Jjos) and [ComfyUI workflow](https://www.runninghub.cn/post/1920075398585974786/?utm_source=kol01-RH099) on how to **increase the editing success to 100%**!🚀 Have a try!
-- **[2025/5/3]** 🌟 Heartfelt thanks to [softicelee2](https://github.com/softicelee2) for making a [Youtube video](https://youtu.be/rRMc5DE4qMo) on how to use our model!
-# 📖 Table of Contents
-
-- [🎆 News](#-news)
-    - [👑 Feel free to share your results in this Gallery!](#-feel-free-to-share-your-results-in-this-gallery)
-- [🎈 Tutorial on Bilibili or Youtube](#-tutorial-on-bilibili-or-youtube)
-- [📖 Table of Contents](#-table-of-contents)
-- [🎨ComfyUI Workflow](#comfyui-workflow)
-    - [Official ComfyUI-workflow](#official-comfyui-workflow)
-    - [ComfyUI-workflow for increased editing success rate](#comfyui-workflow-for-increased-editing-success-rate)
-    - [ComfyUI-nunchaku](#comfyui-nunchaku)
-    - [ComfyUI-workflow](#comfyui-workflow-1)
-- [⚠️ Tips](#️-tips)
-    - [If you encounter such a failure case, please **try again with a different seed**!](#if-you-encounter-such-a-failure-case-please-try-again-with-a-different-seed)
-    - [⚠️ Clarification](#️-clarification)
-- [💼 Installation](#-installation)
-  - [Conda environment setup](#conda-environment-setup)
-  - [Download pretrained weights](#download-pretrained-weights)
-  - [Inference in bash (w/o VLM Inference-time Scaling)](#inference-in-bash-wo-vlm-inference-time-scaling)
-  - [Inference in Gradio Demo](#inference-in-gradio-demo)
-  - [💼 Windows one-click package](#-windows-one-click-package)
-- [🔧 Training](#-training)
-- [💪 To Do List](#-to-do-list)
-- [💪 Comparison with Commercial Models](#-comparison-with-commercial-models)
-- [🌟 Star History](#-star-history)
-- [Bibtex](#bibtex)
-
-
-
-# 🎨ComfyUI Workflow
-
-
-### Official ComfyUI-workflow
-We have released our **official ComfyUI workflow** in this repository for correct usage of our model! **We have embedded the prompt "A diptych with two side-by-side images of the same scene ... but" into our nodes** and you just need to input the edit instructions such as "make the girl wear pink sunglasses". We also add a high resolution refinement module for better image quality! The total VRAM consumption is about 14GB. Use this [workflow](https://github.com/hayd-zju/ICEdit-ComfyUI-official) and the [ICEdit-normal-lora](https://huggingface.co/RiverZ/normal-lora/tree/main) to fulfill your creative ideas!
-
-We have specially created [a repository for the workflow](https://github.com/hayd-zju/ICEdit-ComfyUI-official) and you can **install it directly in ComfyUI**. Just open the manager tab and click **'Install via Git URL'**, copy the following URL and you are able to use it. For more details please refer to this [issue](https://github.com/River-Zhang/ICEdit/issues/22#issuecomment-2864977880)
-
-**URL:** [https://github.com/hayd-zju/ICEdit-ComfyUI-official](https://github.com/hayd-zju/ICEdit-ComfyUI-official)
-
- <img src="docs/images/workflow_tutorial.png" width="80%" style="display: block; margin: auto;">
- <img src="docs/images/official_workflow.png" width="80%" style="display: block; margin: auto;">
-
- Great thanks to [月下Hugo](https://www.bilibili.com/video/BV1JZVRzuE12/?share_source=copy_web&vd_source=8fcb933ee576af56337afc41509fa095) for making a [Chinese tutorial](https://www.bilibili.com/video/BV1JZVRzuE12/?share_source=copy_web&vd_source=8fcb933ee576af56337afc41509fa095) on how to use our official workflow!
-
-### ComfyUI-workflow for increased editing success rate
-Thanks to [T8star](https://x.com/T8star_Aix)! He made a tutorial ([Youtube](https://www.youtube.com/watch?v=s6GMKL-Jjos) and [bilibili](https://www.bilibili.com/video/BV11HVhz1Eky/?spm_id_from=333.40164.top_right_bar_window_dynamic.content.click&vd_source=2a911c0bc75f6d9b9d056bf0e7410d45)) and a creative workflow ([OpenArt](https://openart.ai/workflows/t8star/icedit100v1/HN4EZ2Cej98ZX8CC1RK5) and [RunningHub](https://www.runninghub.cn/post/1920075398585974786/?utm_source=kol01-RH099)) that could increase the editing success rate greatly (about 100%)! Have a try with it!
-
-<img src="docs/images/workflow_t8.png" width="80%" style="display: block; margin: auto;">
-
-
-### ComfyUI-nunchaku
-
-We extend our heartfelt thanks to @[judian17](https://github.com/judian17) for crafting a ComfyUI [workflow](https://github.com/River-Zhang/ICEdit/issues/1#issuecomment-2846568411) that facilitates seamless usage of our model. Explore this excellent [workflow](https://github.com/River-Zhang/ICEdit/issues/1#issuecomment-2846568411) to effortlessly run our model within ComfyUI. Only **4GB VRAM GPU** is enough to run with ComfyUI-nunchaku! 
-
-This workflow incorporates high-definition refinement, yielding remarkably good results. Moreover, integrating this LoRA with Redux enables outfit changes to a certain degree. Once again, a huge thank you to @[judian17](https://github.com/judian17) for his innovative contributions! 
-
-![comfyui image](docs/images/comfyuiexample.png)
-
-
-### ComfyUI-workflow
-
-Thanks to [Datou](https://x.com/Datou), a workflow of ICEdit in ComfyUI can also be downloaded [here](https://openart.ai/workflows/datou/icedit-moe-lora-flux-fill/QFmaWNKsQo3P5liYz4RB). Try it with the [normal lora ckpt](https://huggingface.co/RiverZ/normal-lora/tree/main).
-
-<img src="docs/images/workflow.png" width="80%" style="display: block; margin: auto;">
-
-
-
-
-
-
 # ⚠️ Tips
 
 ### If you encounter such a failure case, please **try again with a different seed**!
@@ -202,7 +96,7 @@ python scripts/inference.py --image assets/girl.png \
 
 ```
 
-Editing a 512×768 image requires 35 GB of GPU memory. If you need to run on a system with 24 GB of GPU memory (for example, an NVIDIA RTX3090), you can add the `--enable-model-cpu-offload` parameter.
+Editing a 512×768 image requires 35 GB of NPU memory. If you need to run on a system with 24 GB of NPU memory, you can add the `--enable-model-cpu-offload` parameter.
 
 ```bash
 python scripts/inference.py --image assets/girl.png \
@@ -219,71 +113,25 @@ python scripts/inference.py --image assets/girl.png \
                             --lora-path /path/to/ICEdit-normal-LoRA
 ```
 
-## Inference in Gradio Demo
-
-We provide a gradio demo for you to edit images in a more user-friendly way. You can run the following command to start the demo.
-
-```bash
-python scripts/gradio_demo.py --port 7860
-```
-
-Like the inference script, if you want to run the demo on a system with 24 GB of GPU memory, you can add the `--enable-model-cpu-offload` parameter. And if you have downloaded the pretrained weights locally, please pass the parameters during inference, as in:
-
-```bash
-python scripts/gradio_demo.py --port 7860 \
-                              --flux-path /path/to/flux.1-fill-dev (optional) \
-                              --lora-path /path/to/ICEdit-normal-LoRA (optional) \
-                              --enable-model-cpu-offload (optional) \
-```
-
-Or if you want to run the demo on a system with 10 GB of GPU memory, you can download the gguf models from [FLUX.1-Fill-dev-gguf](https://huggingface.co/YarvixPA/FLUX.1-Fill-dev-gguf), [t5-v1_1-xxl-encoder-gguf](https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf) and pass the parameters during inference, as in:
-
-```bash
-python scripts/gradio_demo.py --port 7861 \
-                              --flux-path models/flux.1-fill-dev \
-                              --lora-path models/ICEdit-normal-LoRA \
-                              --transformer models/flux1-fill-dev-Q4_0.gguf \
-                              --text_encoder_2 models/t5-v1_1-xxl-encoder-Q8_0.gguf \
-                              --enable-model-cpu-offload \
-```
-
-Then you can open the link in your browser to edit images.
-
-<div align="center">
-<div style="width: 80%; text-align: left; margin:auto;">
-    <img style="width:100%" src="docs/images/gradio.png">
-    <p style="text-align: left;">Gradio Demo: just input the instruction and wait for the result!</b>.</p>
-</div>
-
-<div align="left">
-
-Here is also a Chinese tutorial [Youtube video](https://www.youtube.com/watch?v=rRMc5DE4qMo) on how to install and use ICEdit, created by [softicelee2](https://github.com/softicelee2). It's definitely worth a watch!
-
-## 💼 Windows one-click package
-
-Great thanks to [gluttony-10](https://github.com/River-Zhang/ICEdit/issues/23#issue-3050804566), a famous [Bilibili Up](https://space.bilibili.com/893892)! He made a tutorial ([Youtube](https://youtu.be/C-OpWlJi424) and [Bilibili](https://www.bilibili.com/video/BV1oT5uzzEbs)) on how to install our project on windows and a one-click package for Windows! **Just unzip it and it's ready to use**. It has undergone quantization processing. It only takes up 14GB of space and supports graphics cards of the 50 series.
-
-Download link: [Google Drive](https://drive.google.com/drive/folders/16j3wQvWjuzCRKnVolszLmhCtc_yOCqcx?usp=sharing) or [Baidu Wangpan](https://www.bilibili.com/video/BV1oT5uzzEbs/?vd_source=2a911c0bc75f6d9b9d056bf0e7410d45)(refer to the comment section of the video)
-<img src="docs/images/windows_install.png" width="80%" style="display: block; margin: auto;">
-
 
 # 🔧 Training
 
 Found more details in here: [Training Code](./train/)
 
-# 💪 To Do List
+Challenges:
+1. Different from GPU, there are many `Ascend-toolkit` related **system variables** to add.
+2. Some python libraries are not compatible with NPU. For convenience, I provide available [combination](./train/requirements.txt) with exact lib versions. 
 
-- [x] Inference Code
-- [ ] Inference-time Scaling with VLM
-- [x] Pretrained Weights
-- [x] More Inference Demos
-- [x] Gradio demo
-- [x] Comfy UI demo (by @[judian17](https://github.com/River-Zhang/ICEdit/issues/1#issuecomment-2846568411), compatible with [nunchaku](https://github.com/mit-han-lab/ComfyUI-nunchaku), support high-res refinement and FLUX Redux. Only 4GB VRAM GPU is enough to run!)
-- [x] Comfy UI demo with normal lora (by @[Datou](https://openart.ai/workflows/datou/icedit-moe-lora-flux-fill/QFmaWNKsQo3P5liYz4RB) in openart)
-- [x] Official ComfyUI workflow
-- [x] Training Code
-- [ ] LoRA for higher image resolution (768, 1024)
+When facing underlying problems of Ascend NPU, it's recommended to refer to github issues of related repositories or ask `Kimi` which is more professional on Ascend NPU than other AI.
 
+Some demos after training 12000 global steps:
+
+Change it to look like it's in the style of an impasto painting.
+![flux-fill-test-12000-3-edit](https://github.com/user-attachments/assets/8b61e84c-5f6b-40da-8926-9dbd6594b061)
+Make it pop art.
+![flux-fill-test-12000-9-edit](https://github.com/user-attachments/assets/49798605-d0cf-4148-95a2-2a49cf1cc9ef)
+Make the image look like it's from an ancient Egyptian mural.
+![flux-fill-test-12000-0-edit](https://github.com/user-attachments/assets/2c7f9116-1242-47a1-bcfa-a37fa18b5e50)
 
 
 # 💪 Comparison with Commercial Models
@@ -297,10 +145,6 @@ Found more details in here: [Training Code](./train/)
 
 <div align="left">
 
-
-# 🌟 Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=River-Zhang/ICEdit&type=Date)](https://www.star-history.com/#River-Zhang/ICEdit&Date)
 
 # Bibtex
 If this work is helpful for your research, please consider citing the following BibTeX entry.
