@@ -1,5 +1,7 @@
+from torch_npu.contrib import transfer_to_npu
+import os
 from torch.utils.data import DataLoader
-import torch
+import torch, torch_npu
 import lightning as L
 import yaml
 import os
@@ -46,11 +48,22 @@ def init_wandb(wandb_config, run_name):
     except Exception as e:
         print("Failed to initialize WanDB:", e)
 
-
+import torch.distributed as dist
 def main():
     # Initialize
-    is_main_process, rank = get_rank() == 0, get_rank()
-    torch.cuda.set_device(rank)
+    rank = int(os.environ.get("LOCAL_RANK", 0))
+    world_size = int(os.environ.get("WORLD_SIZE", 1))
+    torch_npu.npu.init()
+
+    if world_size > 1:
+        dist.init_process_group(backend='hccl', init_method='env://')
+        torch_npu.npu.set_device(rank) 
+        is_main_process = rank == 0
+    else:
+        torch_npu.npu.set_device(0)
+        is_main_process = True
+        
+    
     config = get_config()
     training_config = config["train"]
     run_name = time.strftime("%Y%m%d-%H%M%S")
@@ -58,7 +71,7 @@ def main():
     seed = 666
     np.random.seed(seed)
     torch.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)
+    torch.npu.manual_seed_all(seed)
     random.seed(seed)
 
     # Initialize WanDB
@@ -74,9 +87,11 @@ def main():
         config['use_offset_noise'] = False
 
     # Initialize dataset and dataloader
+    CACHE_DIR = '/dev/shm/dataset_cache' # 缓存路径
+    os.makedirs(CACHE_DIR, exist_ok=True)
     
     if training_config["dataset"]["type"] == "edit":
-        dataset = load_dataset('osunlp/MagicBrush')
+        dataset = load_dataset('osunlp/MagicBrush', cache_dir=CACHE_DIR)
         dataset = EditDataset(
             dataset,
             condition_size=training_config["dataset"]["condition_size"],
@@ -84,7 +99,7 @@ def main():
             drop_text_prob=training_config["dataset"]["drop_text_prob"],
         )
     elif training_config["dataset"]["type"] == "omini":
-        dataset = load_dataset(training_config["dataset"]["path"])
+        dataset = load_dataset(training_config["dataset"]["path"], cache_dir=CACHE_DIR)
         dataset = OminiDataset(
             dataset,
             condition_size=training_config["dataset"]["condition_size"],
@@ -93,8 +108,8 @@ def main():
         )
 
     elif training_config["dataset"]["type"] == "edit_with_omini":
-        omni = load_dataset("parquet", data_files=os.path.abspath(training_config["dataset"]["path"]), split="train")
-        magic = load_dataset('osunlp/MagicBrush')
+        omni = load_dataset("parquet", data_files=os.path.abspath(training_config["dataset"]["path"]), split="train", cache_dir=CACHE_DIR)
+        magic = load_dataset('osunlp/MagicBrush', cache_dir=CACHE_DIR)
         dataset = EditDataset_with_Omini(
             magic,
             omni,
@@ -110,13 +125,14 @@ def main():
         batch_size=training_config["batch_size"],
         shuffle=True,
         num_workers=training_config["dataloader_workers"],
+        pin_memory=True,  
     )
 
     # Initialize model
     trainable_model = OminiModel(
         flux_fill_id=config["flux_path"],
         lora_config=training_config["lora_config"],
-        device=f"cuda",
+        device=f"npu",
         dtype=getattr(torch, config["dtype"]),
         optimizer_config=training_config["optimizer"],
         model_config=config.get("model", {}),
@@ -130,13 +146,39 @@ def main():
         if is_main_process
         else []
     )
+    # Save config
+    save_path = training_config.get("save_path", "./output")
+    if is_main_process:
+        os.makedirs(f"{save_path}/{run_name}")
+        with open(f"{save_path}/{run_name}/config.yaml", "w") as f:
+            yaml.dump(config, f)
 
     # Initialize trainer
+    from lightning.pytorch.accelerators import Accelerator
+    class NPUAccelerator(Accelerator):
+        @staticmethod
+        def is_available() -> bool:
+            return torch_npu.npu.is_available()
+
+        @staticmethod
+        def get_parallel_devices(devices):
+            return [torch.device(f"npu:{i}") for i in devices]
+
+        @staticmethod
+        def auto_device_count() -> int:
+            return torch_npu.npu.device_count()
+        
+    NPUAccelerator.register_accelerators(NPUAccelerator)
+    
     trainer = L.Trainer(
+        accelerator='npu',
+        devices=world_size,
+        strategy='ddp' if world_size > 1 else 'auto',
         accumulate_grad_batches=training_config["accumulate_grad_batches"],
         callbacks=training_callbacks,
         enable_checkpointing=False,
-        enable_progress_bar=False,
+        default_root_dir=f"{save_path}/{run_name}",
+        enable_progress_bar=True,
         logger=False,
         max_steps=training_config.get("max_steps", -1),
         max_epochs=training_config.get("max_epochs", -1),
@@ -145,13 +187,7 @@ def main():
 
     setattr(trainer, "training_config", training_config)
 
-    # Save config
-    save_path = training_config.get("save_path", "./output")
-    if is_main_process:
-        os.makedirs(f"{save_path}/{run_name}")
-        with open(f"{save_path}/{run_name}/config.yaml", "w") as f:
-            yaml.dump(config, f)
-
+    
     # Start training
     trainer.fit(trainable_model, train_loader)
 

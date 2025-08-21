@@ -1,13 +1,11 @@
 import lightning as L
-from diffusers.pipelines import FluxPipeline, FluxFillPipeline
+from diffusers.pipelines import FluxFillPipeline
 import torch
 from peft import LoraConfig, get_peft_model_state_dict
 import os
 import prodigyopt
 
-from ..flux.transformer import tranformer_forward
-from ..flux.condition import Condition
-from ..flux.pipeline_tools import encode_images, encode_images_fill, prepare_text_input
+from ..flux.pipeline_tools import encode_images_fill, prepare_text_input
 
 
 class OminiModel(L.LightningModule):
@@ -36,6 +34,9 @@ class OminiModel(L.LightningModule):
         self.text_encoder = self.flux_fill_pipe.text_encoder
         self.text_encoder_2 = self.flux_fill_pipe.text_encoder_2
         self.transformer.gradient_checkpointing = gradient_checkpointing
+        if gradient_checkpointing:
+            self.transformer.enable_gradient_checkpointing()
+            
         self.transformer.train()
         # Freeze the Flux pipeline
         self.text_encoder.requires_grad_(False)

@@ -1,3 +1,9 @@
+This is an **Ascend (Huawei NPU)-powered** version of ICEdit. 
+
+It has been rigorously tested on the 910B platform with CANN-8.0.RC2. 
+
+Moreover, this version supports multi-NPU training, enabling efficient and scalable training processes.
+
 <div align="center">
 
 <h1>In-Context Edit: Enabling Instructional Image Editing with In-Context Generation in Large Scale Diffusion Transformer</h1>
@@ -192,7 +198,8 @@ Now you can have a try!
 ```bash
 python scripts/inference.py --image assets/girl.png \
                             --instruction "Make her hair dark green and her clothes checked." \
-                            --seed 304897401 \
+                            --seed 304897401
+
 ```
 
 Editing a 512×768 image requires 35 GB of GPU memory. If you need to run on a system with 24 GB of GPU memory (for example, an NVIDIA RTX3090), you can add the `--enable-model-cpu-offload` parameter.

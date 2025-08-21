@@ -4,3 +4,7 @@ normal/
 scripts/inference_50seed.py
 success.txt
 icedit/
+parquet/
+train/runs/*
+train/kernel_meta/*
+*.log

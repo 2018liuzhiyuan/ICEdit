@@ -1,11 +1,13 @@
+from torch_npu.contrib import transfer_to_npu
+
 # Use the modified diffusers & peft library
 import sys
 import os
+
 # workspace_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../icedit"))
 
 # if workspace_dir not in sys.path:
 #     sys.path.insert(0, workspace_dir)
-    
 from diffusers import FluxFillPipeline
 
 # Below is the original library
@@ -23,6 +25,7 @@ parser.add_argument("--output-dir", type=str, default=".", help="Directory to sa
 parser.add_argument("--flux-path", type=str, default='black-forest-labs/flux.1-fill-dev', help="Path to the model")
 parser.add_argument("--lora-path", type=str, default='RiverZ/normal-lora', help="Path to the LoRA weights")
 parser.add_argument("--enable-model-cpu-offload", action="store_true", help="Enable CPU offloading for the model")
+parser.add_argument("--save-name", type=str, default="", help="Name of the output image")
 
 
 args = parser.parse_args()
@@ -30,9 +33,10 @@ pipe = FluxFillPipeline.from_pretrained(args.flux_path, torch_dtype=torch.bfloat
 pipe.load_lora_weights(args.lora_path)
 
 if args.enable_model_cpu_offload:
-    pipe.enable_model_cpu_offload() 
+    pipe.enable_model_cpu_offload(None, "npu")
 else:
-    pipe = pipe.to("cuda")
+    pipe = pipe.to("npu")
+
 
 image = Image.open(args.image)
 image = image.convert("RGB")
@@ -75,5 +79,7 @@ result_image = result_image.crop((width,0,width*2,height))
 os.makedirs(args.output_dir, exist_ok=True)
 
 image_name = args.image.split("/")[-1]
+if args.save_name:
+    image_name = args.save_name
 result_image.save(os.path.join(args.output_dir, f"{image_name}"))
 print(f"\033[92mResult saved as {os.path.abspath(os.path.join(args.output_dir, image_name))}\033[0m")
